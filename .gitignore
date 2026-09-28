@@ -1,0 +1,28 @@
+# Entorno virtual
+venv/
+__pycache__/
+*.pyc
+
+# Sesiones y perfiles de Chromium (pesados)
+chrome_session_data/
+chrome_profiles/
+chrome_user_data/
+
+# Backups
+backups_*/
+*.bak
+*.bak2
+*.bak3
+*.bak_final
+*.bak_captcha
+*.bak_locks
+*.bak_stealth
+
+# Reportes y logs
+Reporte_*.xlsx
+scraper.log
+*.tgz
+
+# Archivos temporales
+.DS_Store
+*.tmp
