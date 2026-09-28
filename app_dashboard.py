@@ -10,6 +10,15 @@ import time
 import subprocess
 from datetime import datetime, timedelta
 
+def _es_entorno_cloud():
+    if os.getenv("STREAMLIT_SHARING_MODE") == "streamlit":
+        return True
+    if not os.path.exists(os.path.join(os.path.dirname(os.path.abspath(__file__)), "venv")):
+        return True
+    return False
+
+EN_CLOUD = _es_entorno_cloud()
+
 import streamlit as st
 import sqlite3
 import pandas as pd
@@ -292,15 +301,25 @@ plataformas_analisis = st.sidebar.multiselect(
     key="plats_analisis",
 )
 
-if st.sidebar.button("🚀 Analizar esta fecha", type="primary", use_container_width=True):
-    if not duraciones_analisis or not plataformas_analisis:
-        st.sidebar.error("Selecciona duraciones y plataformas.")
-    else:
-        st.session_state["analisis_activo"] = True
-        st.session_state["analisis_fecha"] = nueva_fecha.strftime("%Y-%m-%d")
-        st.session_state["analisis_durs"] = ",".join(str(d) for d in duraciones_analisis)
-        st.session_state["analisis_plats"] = ",".join(plataformas_analisis)
-        st.rerun()
+if EN_CLOUD:
+    st.sidebar.success(
+        "🌐 **Modo nube activo**\n\n"
+        "El dashboard lee datos de la última actualización.\n\n"
+        "Para actualizar los datos:\n"
+        "1. Scrapea desde tu PC\n"
+        "2. Sube la DB: `git push`\n"
+        "3. Se actualiza solo"
+    )
+else:
+    if st.sidebar.button("🚀 Analizar esta fecha", type="primary", use_container_width=True):
+        if not duraciones_analisis or not plataformas_analisis:
+            st.sidebar.error("Selecciona duraciones y plataformas.")
+        else:
+            st.session_state["analisis_activo"] = True
+            st.session_state["analisis_fecha"] = nueva_fecha.strftime("%Y-%m-%d")
+            st.session_state["analisis_durs"] = ",".join(str(d) for d in duraciones_analisis)
+            st.session_state["analisis_plats"] = ",".join(plataformas_analisis)
+            st.rerun()
 
 st.sidebar.markdown("---")
 
@@ -309,7 +328,7 @@ st.sidebar.markdown("---")
 # RUNNER DEL ANÁLISIS
 # ══════════════════════════════════════════════════════════════════════════════
 
-if st.session_state.get("analisis_activo"):
+if st.session_state.get("analisis_activo") and not EN_CLOUD:
     fecha_iso = st.session_state["analisis_fecha"]
     durs_str = st.session_state["analisis_durs"]
     plats_str = st.session_state["analisis_plats"]
