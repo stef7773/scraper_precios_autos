@@ -26,3 +26,36 @@ scraper.log
 # Archivos temporales
 .DS_Store
 *.tmp
+
+# Sesiones de Firefox (nuevas)
+firefox_session_expedia/
+chrome_session_expedia/
+
+# Logs específicos
+scraper_expedia*.log
+scraper_humano.log
+scraper_expedia_v*.log
+*.log
+
+# Backups extendidos
+*.bak_antes
+*.bak_cat
+*.bak_cloud
+*.bak_final2
+*.bak_mobile
+*.bak_premium
+*.bak_prev
+*.bak_sin_ia
+*.bak_tab2
+*.bak_v2
+*.bak_v3
+*.bak_v4
+*.bak_df
+*.bak_p_riv
+*.bak_roto
+*.cortado
+*.viejo
+
+# DBs temporales
+ia_cache.db
+precios_competencia.db.viejo
